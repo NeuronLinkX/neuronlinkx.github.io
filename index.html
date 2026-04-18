@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JiWoo Park - AI Research</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            line-height: 1.7;
+            color: #2c3e50;
+            background-color: #fafafa;
+        }
+
+        /* Header/Masthead - Magazine Style */
+        .masthead {
+            background: white;
+            border-bottom: 3px solid #1a1a1a;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .masthead-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .masthead h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: -1px;
+        }
+
+        .masthead .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .masthead .korean {
+            font-size: 0.95em;
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Main Grid Layout */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        .featured-article {
+            background: white;
+            padding: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .featured-article h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .featured-article p {
+            margin-bottom: 20px;
+            font-size: 1em;
+            line-height: 1.8;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .sidebar-box {
+            background: white;
+            padding: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .sidebar-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #1a1a1a;
+            padding-bottom: 10px;
+        }
+
+        .education-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .education-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .education-item h4 {
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+
+        .education-item p {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        /* Research Interests Card */
+        .research-box {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+            border-left: 4px solid #1a1a1a;
+        }
+
+        .research-box h3 {
+            border-bottom: 2px solid #1a1a1a;
+        }
+
+        .research-list {
+            list-style: none;
+        }
+
+        .research-list li {
+            padding: 10px 0;
+            position: relative;
+            padding-left: 20px;
+            font-size: 0.95em;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .research-list li:last-child {
+            border-bottom: none;
+        }
+
+        .research-list li:before {
+            content: "■";
+            position: absolute;
+            left: 0;
+            color: #1a1a1a;
+            font-size: 0.6em;
+            margin-top: 4px;
+        }
+
+        /* Action Box */
+        .action-links {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .action-links h3 {
+            border-bottom: 2px solid white;
+            color: white;
+        }
+
+        .action-links p {
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        .link-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .link-grid a {
+            background: white;
+            color: #1a1a1a;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9em;
+            text-align: center;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .link-grid a:hover {
+            background: #f5f5f5;
+            transform: translateY(-2px);
+        }
+
+        /* Multi-column layout for research center */
+        .featured-full {
+            background: white;
+            padding: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            margin-top: 30px;
+        }
+
+        .featured-full h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .two-col-item p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .two-col-item strong {
+            color: #1a1a1a;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .button-group a {
+            flex: 1;
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: #1a1a1a;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .button-group a:hover {
+            background-color: #333;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            border-top: 3px solid #333;
+        }
+
+        footer p {
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .masthead h1 {
+                font-size: 2.8em;
+            }
+
+            .featured-article {
+                padding: 30px;
+            }
+
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+
+            .link-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-group a {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .masthead h1 {
+                font-size: 2.2em;
+            }
+
+            .featured-article,
+            .featured-full,
+            .sidebar-box {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Masthead -->
+    <div class="masthead">
+        <div class="masthead-content">
+            <h1>JiWoo Park</h1>
+            <div class="subtitle">AI Research & Development</div>
+            <div class="korean">박지우</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Featured Article -->
+        <article class="featured-article">
+            <h2>About My Research</h2>
+            <div class="article-meta">AI Researcher | Kookmin University</div>
+            <p>
+                I am a Master's student in Artificial Intelligence Applications at the Graduate School of Software Convergence, Kookmin University. My research is focused on advancing edge AI technologies and optimizing lightweight language models (SLM/LLM) for resource-constrained communication environments.
+            </p>
+            <p>
+                My work bridges the gap between cutting-edge AI development and practical implementation in challenging real-world scenarios, particularly in special communication networks such as underwater and polar environments. I am passionate about creating efficient, scalable AI solutions that can operate effectively where computational resources are limited.
+            </p>
+        </article>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Education Box -->
+            <div class="sidebar-box">
+                <h3>Education</h3>
+                <div class="education-item">
+                    <h4>Master's in AI Applications</h4>
+                    <p><strong>Kookmin University</strong></p>
+                    <p>2026 – Present</p>
+                </div>
+                <div class="education-item">
+                    <h4>Bachelor's in Computer Science</h4>
+                    <p><strong>Korea National Open University</strong></p>
+                    <p>2026</p>
+                </div>
+            </div>
+
+            <!-- Research Interests Box -->
+            <div class="sidebar-box research-box">
+                <h3>Research Interests</h3>
+                <ul class="research-list">
+                    <li>Special communication networks</li>
+                    <li>Underwater & polar networks</li>
+                    <li>Edge AI systems</li>
+                    <li>Lightweight LLM/SLM</li>
+                    <li>System-level optimization</li>
+                </ul>
+            </div>
+
+            <!-- Action Links Box -->
+            <div class="sidebar-box action-links">
+                <h3>Connect</h3>
+                <p>Get in touch for collaboration opportunities</p>
+                <div class="link-grid">
+                    <a href="https://github.com/NeuronLinkX" target="_blank">GitHub</a>
+                    <a href="mailto:contact@neuronlinkx.com">Email</a>
+                    <a href="https://www.kookmin.ac.kr" target="_blank">Kookmin</a>
+                    <a href="https://scrc.kookmin.ac.kr/scrc/index.do" target="_blank">SCRC</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Featured Full Width -->
+    <div class="featured-full">
+        <h2>Research Focus</h2>
+        <div class="two-col">
+            <div class="two-col-item">
+                <h3 style="font-size: 1.2em; margin-bottom: 10px;">Edge AI & Lightweight Models</h3>
+                <p>
+                    Developing and optimizing small language models and edge AI solutions that work efficiently in resource-constrained environments. Focus on reducing computational overhead while maintaining performance.
+                </p>
+            </div>
+            <div class="two-col-item">
+                <h3 style="font-size: 1.2em; margin-bottom: 10px;">Special Communication Networks</h3>
+                <p>
+                    Exploring AI applications in challenging communication scenarios including underwater networks and polar regions. Implementing system-level optimizations for these specialized environments.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 JiWoo Park. All rights reserved.</p>
+        <p>Master's Program in Artificial Intelligence Applications | Kookmin University</p>
+    </footer>
+</body>
+</html>

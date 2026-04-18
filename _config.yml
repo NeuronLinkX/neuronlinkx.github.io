@@ -1,0 +1,17 @@
+site:
+  title: JiWoo Park
+  description: AI Research & Development Portfolio - Edge AI and Special Communication Networks
+  author: JiWoo Park
+  url: https://neuronlinkx.github.io
+
+markdown: kramdown
+theme: minima
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+exclude:
+  - .gitignore
+  - Gemfile
+  - Gemfile.lock
