@@ -1,0 +1,28 @@
+---
+title: Code-Based Toy Transformer Encoder-Decoder Study
+date: May 15, 2026
+tags: Transformer, Encoder-Decoder, PyTorch, Architecture Mapping
+attachments: paper/A forward pass structure analysis and cononical architecture mapping of a code-based toy transformer encoder-decoder.pdf|A Forward Pass Structure Analysis Paper|pdf, https://github.com/NeuronLinkX/basic_transformer_study|basic_transformer_study GitHub Repository|repo
+---
+`basic_transformer_study` is a research-oriented repository that follows the forward pass of a code-based toy transformer encoder-decoder and maps each operation back to its role in the canonical transformer architecture.
+
+## Overview
+
+This project focuses less on how to use a transformer and more on what actually happens inside it. It traces the input flow of the encoder and decoder, the attention paths, the projection stages, and the output generation process directly from code, then aligns those steps with the standard conceptual transformer design.
+
+## What This Page Includes
+
+- [Open the code repository](https://github.com/NeuronLinkX/basic_transformer_study)
+- [Download the paper PDF](paper/A forward pass structure analysis and cononical architecture mapping of a code-based toy transformer encoder-decoder.pdf)
+
+## Why It Matters
+
+A structure-first toy implementation provides several practical advantages:
+
+1. It makes it possible to verify the full data flow of an encoder-decoder transformer layer by layer.
+2. It helps clarify how attention, residual connections, and projection blocks are actually connected in real code.
+3. It provides a clean reference architecture for later experiments in compression, structural modification, and edge deployment.
+
+## Reading Guide
+
+The resource cards on this page let you download the PDF directly and open the GitHub repository alongside it. The PDF serves as the architecture-analysis document, while the repository provides the code-level implementation path that supports the same interpretation.

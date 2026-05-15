@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/gh/giscus/giscus-component@1/dist/giscus-component.js"></script>
     <style>
         /* ==================== GLOBAL STYLES ==================== */
         * {
@@ -202,7 +201,6 @@
         .research-sections,
         .blog-section,
         .connect-section,
-        .comments-section,
         footer {
             animation: fadeInSoft 0.9s ease both;
         }
@@ -575,7 +573,6 @@
         }
         .blog-section,
         .connect-section,
-        .comments-section,
         footer {
             scroll-snap-align: start;
         }
@@ -981,22 +978,6 @@
             color: white;
         }
 
-        /* ==================== COMMENTS SECTION ==================== */
-        .comments-section {
-            padding: 4rem clamp(2rem, 8vw, 6rem);
-            background-color: var(--bg-primary);
-            border-top: 1px solid var(--border-color-light);
-        }
-
-        .comments-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .giscus {
-            color-scheme: light;
-        }
-
         /* ==================== CONNECT SECTION ==================== */
         .connect-section {
             padding: 5rem clamp(2rem, 8vw, 6rem);
@@ -1139,7 +1120,7 @@
             <a href="#about" class="nav-link">About</a>
             <a href="#research" class="nav-link">Research</a>
             <a href="#posts" class="nav-link">Posts</a>
-            <a href="#comments" class="nav-link">Comments</a>
+            <a href="#connect" class="nav-link">Connect</a>
         </div>
     </nav>
 
@@ -1283,7 +1264,7 @@
     </div>
 
     <!-- Connect Section -->
-    <section class="connect-section">
+    <section class="connect-section" id="connect">
         <div class="connect-content">
             <h2>Connect</h2>
             <p style="white-space: nowrap; overflow-x: auto; max-width: none;">
@@ -1293,29 +1274,6 @@
                 <a href="mailto:jiwoo93@kookmin.ac.kr" class="connect-link">Email</a>
 
             </div>
-        </div>
-    </section>
-
-    <!-- Comments Section -->
-    <section class="comments-section" id="comments">
-        <div class="comments-content">
-            <div class="section-label">Discussion</div>
-            <h2 style="margin-top: 0;">Comments & Feedback</h2>
-            <div class="divider divider-light"></div>
-            <giscus
-                repo="neuronlinkx/neuronlinkx.github.io"
-                repoid="R_kgDOLqJAVw"
-                category="Announcements"
-                categoryid="DIC_kwDOLqJAV84Cf8LS"
-                mapping="pathname"
-                strict="0"
-                reactionsenabled="1"
-                emitmetadata="0"
-                inputposition="bottom"
-                theme="light"
-                lang="ko"
-                loading="lazy">
-            </giscus>
         </div>
     </section>
 
@@ -1358,6 +1316,7 @@
             // Bold and Italic
             html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
             html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
+            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
             html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
             html = html.replace(/_(.+?)_/g, '<em>$1</em>');
             
@@ -1451,6 +1410,21 @@
         }
 
         // ==================== POST PARSER ====================
+        function parseAttachmentEntry(entry) {
+            const [path = '', label = '', kind = ''] = entry.split('|').map(part => part.trim());
+            const normalizedPath = path;
+            const normalizedLabel = label || path.split('/').pop() || 'Resource';
+            const isExternal = /^https?:\/\//i.test(normalizedPath);
+            const inferredKind = kind || (isExternal ? 'external' : /\.pdf$/i.test(normalizedPath) ? 'pdf' : 'file');
+
+            return {
+                path: normalizedPath,
+                label: normalizedLabel,
+                kind: inferredKind,
+                isExternal
+            };
+        }
+
         function parsePost(content) {
             if (!content.includes('---')) return null;
             
@@ -1482,7 +1456,11 @@
                     metadata.tags = value.split(',').map(t => t.trim());
                 }
                 if (key === 'attachments') {
-                    metadata.attachments = value.split(',').map(t => t.trim());
+                    metadata.attachments = value
+                        .split(',')
+                        .map(t => t.trim())
+                        .filter(Boolean)
+                        .map(parseAttachmentEntry);
                 }
             });
             
@@ -1498,7 +1476,7 @@
         // ==================== LOAD POSTS FROM _posts FOLDER ====================
         async function loadPosts() {
             const postFiles = [
-                '_posts/001-ai-platform-trends.txt',
+                '_posts/002-basic-transformer-study.txt',
             ];
             
             const posts = [];
@@ -1555,7 +1533,7 @@
                     <div class="post-tags">
                         ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
                     </div>
-                    <p style="margin-top: 1rem; color: var(--accent-primary); font-size: 0.9rem; text-decoration: underline;">전체 보기 →</p>
+                    <p style="margin-top: 1rem; color: var(--accent-primary); font-size: 0.9rem; text-decoration: underline;">View All →</p>
                 `;
                 
                 postElement.onclick = () => showPostDetail(post);
