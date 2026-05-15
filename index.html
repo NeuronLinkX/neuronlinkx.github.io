@@ -1317,7 +1317,7 @@
             html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
             html = html.replace(/__(.+?)__/g, '<strong>$1</strong>');
             html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            html = html.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, '<em>$1</em>');
             html = html.replace(/_(.+?)_/g, '<em>$1</em>');
             
             // Inline code
@@ -1473,21 +1473,35 @@
             };
         }
 
-        // ==================== LOAD POSTS FROM STATIC POSTS FOLDER ====================
+        // ==================== LOAD POSTS FROM MANIFEST ====================
         async function loadPosts() {
-            const postFiles = [
-                'posts/002-basic-transformer-study.txt',
-            ];
-            
             const posts = [];
-            
-            for (const file of postFiles) {
+
+            let manifest = [];
+
+            try {
+                const manifestResponse = await fetch('posts/index.json');
+                if (!manifestResponse.ok) {
+                    throw new Error(`manifest fetch failed: ${manifestResponse.status}`);
+                }
+                manifest = await manifestResponse.json();
+            } catch (error) {
+                console.log('포스트 매니페스트 로드 실패');
+                return posts;
+            }
+
+            for (const entry of manifest) {
+                const file = `posts/${entry.file}`;
+
                 try {
                     const response = await fetch(file);
                     if (response.ok) {
                         const content = await response.text();
                         const post = parsePost(content);
                         if (post) {
+                            post.file = entry.file;
+                            if (entry.title) post.title = entry.title;
+                            if (entry.date) post.date = entry.date;
                             posts.push(post);
                         }
                     }
@@ -1495,9 +1509,8 @@
                     console.log(`포스트 로드 실패: ${file}`);
                 }
             }
-            
-            // 역순으로 정렬 (최신 포스트가 먼저)
-            return posts.reverse();
+
+            return posts;
         }
 
         // ==================== RENDER PAGINATED BLOG POSTS ====================
@@ -1546,11 +1559,8 @@
 
         // ==================== SHOW POST DETAIL ====================
         function showPostDetail(post) {
-            // localStorage에 포스트 데이터 저장
-            localStorage.setItem('currentPost', JSON.stringify(post));
-            
-            // 새 창에서 post.html 열기
-            window.open('post.html', '_blank');
+            if (!post || !post.file) return;
+            window.open(`post.html?file=${encodeURIComponent(`posts/${post.file}`)}`, '_blank');
         }
 
         // ==================== RENDER PAGINATION CONTROLS ====================

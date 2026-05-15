@@ -565,43 +565,49 @@
         }
 
         // ==================== POST LOADER ====================
-        function loadPost() {
-            const postData = localStorage.getItem('currentPost');
-            if (!postData) {
-                document.getElementById('postContent').innerHTML = '<p>포스트를 찾을 수 없습니다.</p>';
-                return;
+        async function loadPost() {
+            const params = new URLSearchParams(window.location.search);
+            const file = params.get('file') || 'posts/002-basic-transformer-study.txt';
+
+            try {
+                const response = await fetch(file);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const content = await response.text();
+                const post = parsePost(content);
+
+                if (!post) {
+                    throw new Error('Post parse failed');
+                }
+
+                document.getElementById('postTitle').textContent = post.title;
+                document.getElementById('postDate').textContent = post.date;
+                document.getElementById('postContent').innerHTML = parseMarkdown(post.content);
+
+                if (post.tags && post.tags.length > 0) {
+                    document.getElementById('postTags').innerHTML = `
+                        <div class="post-tags">
+                            ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
+                        </div>
+                    `;
+                }
+
+                if (post.attachments && post.attachments.length > 0) {
+                    document.getElementById('attachmentsSection').innerHTML = renderAttachments(post.attachments);
+                }
+
+                document.title = post.title + ' — JiWoo Park';
+            } catch (error) {
+                document.getElementById('postContent').innerHTML =
+                    `<p>포스트를 불러오지 못했습니다: ${error.message}</p>`;
             }
-
-            const post = JSON.parse(postData);
-
-            // 제목과 날짜 설정
-            document.getElementById('postTitle').textContent = post.title;
-            document.getElementById('postDate').textContent = post.date;
-
-            // 마크다운 파싱
-            const parsed = parseMarkdown(post.content);
-            document.getElementById('postContent').innerHTML = parsed;
-
-            // 태그 설정
-            if (post.tags && post.tags.length > 0) {
-                document.getElementById('postTags').innerHTML = `
-                    <div class="post-tags">
-                        ${post.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('')}
-                    </div>
-                `;
-            }
-
-            // 첨부파일 설정
-            if (post.attachments && post.attachments.length > 0) {
-                document.getElementById('attachmentsSection').innerHTML = renderAttachments(post.attachments);
-            }
-
-            // 페이지 제목 설정
-            document.title = post.title + ' — JiWoo Park';
         }
 
         // 페이지 로드 시 포스트 로드
         window.addEventListener('DOMContentLoaded', loadPost);
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
 </body>
 </html>
