@@ -507,6 +507,44 @@
             return html;
         }
 
+        function parsePost(content) {
+            if (!content.includes('---')) return null;
+
+            const firstSeparatorIdx = content.indexOf('---');
+            if (firstSeparatorIdx !== 0) return null;
+
+            const secondSeparatorIdx = content.indexOf('---', 3);
+            if (secondSeparatorIdx === -1) return null;
+
+            const metadataStr = content.substring(firstSeparatorIdx + 3, secondSeparatorIdx).trim();
+            const bodyStr = content.substring(secondSeparatorIdx + 3).trim();
+
+            const metadata = {};
+            const metaLines = metadataStr.split('\n');
+
+            metaLines.forEach((line) => {
+                const colonIdx = line.indexOf(':');
+                if (colonIdx === -1) return;
+
+                const key = line.substring(0, colonIdx).trim();
+                const value = line.substring(colonIdx + 1).trim();
+
+                if (key === 'title') metadata.title = value;
+                if (key === 'date') metadata.date = value;
+                if (key === 'tags') {
+                    metadata.tags = value.split(',').map((tag) => tag.trim());
+                }
+            });
+
+            return {
+                title: metadata.title || 'Untitled',
+                date: metadata.date || 'No date',
+                content: bodyStr,
+                tags: metadata.tags || [],
+                attachments: []
+            };
+        }
+
         function getAttachmentPresentation(attachment) {
             switch (attachment.kind) {
                 case 'pdf':
