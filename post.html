@@ -369,7 +369,7 @@
     <div class="post-container">
         
         <div class="post-header">
-            <h1 class="post-title" id="postTitle">로딩 중...</h1>
+            <h1 class="post-title" id="postTitle">Loading...</h1>
             <div class="post-meta">
                 <div class="post-meta-item">
                     <span class="post-meta-label">Issue date</span>
@@ -624,7 +624,7 @@
                 document.title = post.title + ' — JiWoo Park';
             } catch (error) {
                 document.getElementById('postContent').innerHTML =
-                    `<p>포스트를 불러오지 못했습니다: ${error.message}</p>`;
+                    `<p> ${error.message}</p>`;
             }
         }
 
