@@ -1,9 +1,3 @@
----
-title: Code-Based Toy Transformer Encoder-Decoder Study
-date: May 15, 2026
-tags: Transformer, Encoder-Decoder, PyTorch, Architecture Mapping
-attachments: paper/A forward pass structure analysis and cononical architecture mapping of a code-based toy transformer encoder-decoder.pdf|A Forward Pass Structure Analysis Paper|pdf, https://github.com/NeuronLinkX/basic_transformer_study|basic_transformer_study GitHub Repository|repo
----
 `basic_transformer_study` is a research-oriented repository that follows the forward pass of a code-based toy transformer encoder-decoder and maps each operation back to its role in the canonical transformer architecture.
 
 ## Overview

@@ -2,6 +2,19 @@
   {
     "file": "002-basic-transformer-study.txt",
     "title": "Code-Based Toy Transformer Encoder-Decoder Study",
-    "date": "May 15, 2026"
+    "date": "May 15, 2026",
+    "tags": ["Transformer", "Encoder-Decoder", "PyTorch", "Architecture Mapping"],
+    "attachments": [
+      {
+        "path": "paper/A forward pass structure analysis and cononical architecture mapping of a code-based toy transformer encoder-decoder.pdf",
+        "label": "A Forward Pass Structure Analysis Paper",
+        "kind": "pdf"
+      },
+      {
+        "path": "https://github.com/NeuronLinkX/basic_transformer_study",
+        "label": "basic_transformer_study GitHub Repository",
+        "kind": "repo"
+      }
+    ]
   }
 ]

@@ -1473,6 +1473,16 @@
             };
         }
 
+        function normalizeManifestEntry(entry) {
+            return {
+                file: entry.file,
+                title: entry.title || 'Untitled',
+                date: entry.date || 'No date',
+                tags: Array.isArray(entry.tags) ? entry.tags : [],
+                attachments: Array.isArray(entry.attachments) ? entry.attachments : []
+            };
+        }
+
         // ==================== LOAD POSTS FROM MANIFEST ====================
         async function loadPosts() {
             const posts = [];
@@ -1497,11 +1507,19 @@
                     const response = await fetch(file);
                     if (response.ok) {
                         const content = await response.text();
-                        const post = parsePost(content);
+                        const manifestPost = normalizeManifestEntry(entry);
+                        const parsedPost = parsePost(content);
+                        const post = parsedPost || {
+                            ...manifestPost,
+                            content
+                        };
+
                         if (post) {
                             post.file = entry.file;
-                            if (entry.title) post.title = entry.title;
-                            if (entry.date) post.date = entry.date;
+                            post.title = manifestPost.title;
+                            post.date = manifestPost.date;
+                            post.tags = manifestPost.tags.length ? manifestPost.tags : (post.tags || []);
+                            post.attachments = manifestPost.attachments.length ? manifestPost.attachments : (post.attachments || []);
                             posts.push(post);
                         }
                     }

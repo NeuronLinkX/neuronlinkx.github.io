@@ -564,6 +564,16 @@
             `;
         }
 
+        async function loadManifestEntry(file) {
+            const response = await fetch('posts/index.json');
+            if (!response.ok) {
+                throw new Error(`Manifest HTTP ${response.status}`);
+            }
+
+            const manifest = await response.json();
+            return manifest.find((entry) => `posts/${entry.file}` === file) || null;
+        }
+
         // ==================== POST LOADER ====================
         async function loadPost() {
             const params = new URLSearchParams(window.location.search);
@@ -576,11 +586,24 @@
                 }
 
                 const content = await response.text();
-                const post = parsePost(content);
+                const manifestEntry = await loadManifestEntry(file);
+                const parsedPost = parsePost(content);
+                const post = parsedPost || {
+                    title: manifestEntry?.title || 'Untitled',
+                    date: manifestEntry?.date || 'No date',
+                    tags: Array.isArray(manifestEntry?.tags) ? manifestEntry.tags : [],
+                    attachments: Array.isArray(manifestEntry?.attachments) ? manifestEntry.attachments : [],
+                    content
+                };
 
                 if (!post) {
                     throw new Error('Post parse failed');
                 }
+
+                if (manifestEntry?.title) post.title = manifestEntry.title;
+                if (manifestEntry?.date) post.date = manifestEntry.date;
+                if (Array.isArray(manifestEntry?.tags)) post.tags = manifestEntry.tags;
+                if (Array.isArray(manifestEntry?.attachments)) post.attachments = manifestEntry.attachments;
 
                 document.getElementById('postTitle').textContent = post.title;
                 document.getElementById('postDate').textContent = post.date;
