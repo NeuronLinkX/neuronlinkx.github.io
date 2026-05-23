@@ -4,11 +4,6 @@
 
 This project focuses less on how to use a transformer and more on what actually happens inside it. It traces the input flow of the encoder and decoder, the attention paths, the projection stages, and the output generation process directly from code, then aligns those steps with the standard conceptual transformer design.
 
-## What This Page Includes
-
-- [Open the code repository](https://github.com/NeuronLinkX/basic_transformer_study)
-- [Download the paper PDF](paper/A forward pass structure analysis and cononical architecture mapping of a code-based toy transformer encoder-decoder.pdf)
-
 ## Why It Matters
 
 A structure-first toy implementation provides several practical advantages:
